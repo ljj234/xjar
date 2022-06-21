@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.ozoz</groupId>
+	<artifactId>xjar</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>xjar</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	<dependencies>
+
+		<dependency>
+			<groupId>com.github.core-lib</groupId>
+			<artifactId>xjar</artifactId>
+			<version>v2.0.4</version>
+			<scope>system</scope>
+			<systemPath>${pom.basedir}/lib/xjar-v2.0.4.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.18</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.core-lib</groupId>
+			<artifactId>loadkit</artifactId>
+			<version>v1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${pom.basedir}/lib/loadkit-1.0.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>your.organization</groupId>
+			<artifactId>xjar-plguin</artifactId>
+			<version>1.1.1.0</version>
+			<scope>system</scope>
+			<systemPath>${pom.basedir}/lib/xjar-maven-plugin-2.0.9.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<!-- 用来创建超级JAR包的Maven shade插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+										<exclude>static/**</exclude>
+										<exclude>META-INF/resources/**</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>your.organization</groupId>
+				<artifactId>xjar-plguin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<phase>package</phase>
+						<!-- 或使用
+						<phase>install</phase>
+						-->
+						<configuration>
+							<password>io.xjar</password>
+							<!--                            <includes>-->
+							<!--                                <include>com/company/project/**</include>-->
+							<!--                                <include>mapper/*Mapper.xml</include>-->
+							<!--                            </includes>-->
+							<excludes>
+								<exclude>static/**</exclude>
+								<exclude>META-INF/resources/**</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
